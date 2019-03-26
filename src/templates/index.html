@@ -24,11 +24,10 @@
 				</section>
 			</nav>
 
-{{ panels }}
 			<section class="container" id="main">
 
 				{% if not panels %}
-					<div class="panel operational" data-l10n-id="systems-operational">所有系统都在运行！</div>
+					{% if systems %}<div class="panel operational" data-l10n-id="systems-operational">所有系统都在运行！</div>{% endif %}
 				{% else %}
 					{% for status,systems in panels.items() if systems %}
 					<div class="panel p{{ status }}">
