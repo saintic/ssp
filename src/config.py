@@ -31,5 +31,5 @@ SITE = {
     "title": "SaintIC Status",
     "subtitle": "Web Status of SaintIC",
     "favicon": "https://img.saintic.com/cdn/images/favicon-32.png",
-    "footer": "Copyright &copy;2019 SaintIC. All rights reserved."
+    "footer": "Copyright &copy;2019 <a href='https://www.saintic.com' target='_blank'>SaintIC</a>. All rights reserved."
 }
