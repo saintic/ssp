@@ -42,9 +42,10 @@ def remove_system(name_or_url):
 
 @cli.command()
 @click.option("--name_or_url", '-sid', help=u"根据name或url单独检测")
-def check(name_or_url):
+@click.option("--debug/--no-debug", default=False, help=u"是否开启调试模式", show_default=True)
+def check(name_or_url, debug):
     """运行一次状态检测"""
-    run_check(name_or_url)
+    run_check(name_or_url, debug)
 
 
 if __name__ == "__main__":
