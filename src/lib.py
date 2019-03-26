@@ -81,7 +81,7 @@ def run_add_system(url, name='', ok_status_code=200, is_json=False, verify_succe
             SysKey = gen_rediskey("system", sid)
             pipe = get_redis_connect.pipeline()
             pipe.sadd(IndexKey, SysKey)
-            pipe.hmset(SysKey, dict(sid=sid, url=url, name=name, status=0, method="get", ctime=get_current_timestamp(), email=email, ok_status_code=ok_status_code, is_json=is_json, verify_success_key=verify_success_key, verify_success_value=verify_success_value, verify_success_text=verify_success_text))
+            pipe.hmset(SysKey, dict(sid=sid, url=url, name=name, status=0, method="get", ctime=get_current_timestamp(), email=email, ok_status_code=ok_status_code, is_json=1 if is_json else 0, verify_success_key=verify_success_key, verify_success_value=verify_success_value, verify_success_text=verify_success_text))
             try:
                 pipe.execute()
             except:
@@ -153,7 +153,10 @@ def run_check(sid_or_url=None):
                         else:
                             resp_text = resp.text
                             if sd["verify_success_text"]:
-                                if sd["verify_success_text"] in resp_text:
+                                vt = sd["verify_success_text"]
+                                if isinstance(vt, str):
+                                    vt = vt.decode("utf8")
+                                if vt in resp_text:
                                     ud.update(status=1)
                                 else:
                                     ud.update(check_msg="No preset values ​​found in response data", status=4)
