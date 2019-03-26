@@ -26,7 +26,7 @@ def cli():
 @click.option("--verify-success-value", '-vsv', help=u"仅--json时有效，表示检验业务正常响应的字段值")
 @click.option("--verify-success-text", '-vst', help=u"仅--no-json时有效，表示检验业务正常响应的文本")
 @click.option("--email", help=u"异常时接收报警的邮箱")
-@click.option("--name", help=u"标识名")
+@click.option("--name", help=u"可以作为唯一标识名，建议设置！")
 @click.argument("url")
 def add_system(ok_status_code, json, verify_success_key, verify_success_value, verify_success_text, email, name, url):
     """添加一条监控状态的网址"""

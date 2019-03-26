@@ -60,7 +60,7 @@ def run_add_system(url, name='', ok_status_code=200, is_json=False, verify_succe
     # NO.2 B - 如果不是json，用verify-success-text与返回内容校验，存在表示业务正常，否则业务异常
 
     # 数据字段解释：
-    # sid - url的MD5值，唯一
+    # sid - url的name，未传递时则为urlMD5值，唯一
     # status - 0：等待检测  1：检测正常  2：状态异常  3：业务异常  4：性能下降
     # elapsed - 响应时间
     """
@@ -82,11 +82,11 @@ def run_add_system(url, name='', ok_status_code=200, is_json=False, verify_succe
                     return
                 else:
                     return res
-        sid = md5(url)
-        if get_redis_connect.sismember(IndexKey, sid):
+        sid = name or md5(url)
+        SysKey = gen_rediskey("system", sid)
+        if get_redis_connect.sismember(IndexKey, SysKey):
             res.update(msg="URL已在监控状态")
         else:
-            SysKey = gen_rediskey("system", sid)
             pipe = get_redis_connect.pipeline()
             pipe.sadd(IndexKey, SysKey)
             pipe.hmset(SysKey, dict(sid=sid, url=url, name=name, status=0, method="get", ctime=get_current_timestamp(), email=email, ok_status_code=ok_status_code, is_json=1 if is_json else 0, verify_success_key=verify_success_key, verify_success_value=verify_success_value, verify_success_text=verify_success_text))
