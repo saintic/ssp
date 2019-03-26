@@ -45,7 +45,7 @@
 				<ul class="systems">
 					{% for system in systems %}
 					<li>
-						{{ system.name or system.url }} {% if system.check_msg %}<attr title="{{ system.check_msg }}"><i class="saintic-icon saintic-icon-info" style="font-size:0.5em;"></i></attr>{% endif %} <span class="status s{{ system.status }}" data-l10n-id="system-status-{{ system.status }}"><i class="saintic-icon saintic-icon-{{ iconBind(system.status) }}"></i>{{ system.status }}</span>
+						{% if system.name %}<acronym  title="{{ system.url }}">{{ system.name }}</acronym >{% else %}{{ system.url }}{% endif %} {% if system.check_msg %}<i class="saintic-icon saintic-icon-info" style="font-size:0.8em;" title="{{ system.check_msg }}"></i>{% endif %} <span class="status s{{ system.status }}" data-l10n-id="system-status-{{ system.status }}"><i class="saintic-icon saintic-icon-{{ iconBind(system.status) }}"></i>{{ system.status }}</span>
 					</li>
 					{% endfor %}
 				</ul>
