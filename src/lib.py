@@ -11,6 +11,7 @@
 
 import click
 import traceback
+from config import SYSTEM
 from tool import Logger, get_redis_connect, url_check, gen_rediskey, md5, get_current_timestamp, email_check, try_request, Universal_pat
 
 logger = Logger("sys").getLogger
@@ -176,7 +177,7 @@ def run_check(name_or_url=None, debug=False):
                         ud.update(status=2)
                     if ud.get("status") == 1:
                         # 当请求正常时，写入请求时间，在运行波动范围内（RANGE_TIME）计算性能是否下降
-                        RANGE_TIME = 0.1
+                        RANGE_TIME = SYSTEM["RANGE_TIME"]
                         resp_time = resp.elapsed.total_seconds()
                         last_time = float(sd.get("total_seconds", 0))
                         if last_time != 0:

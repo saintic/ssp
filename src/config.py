@@ -33,3 +33,9 @@ SITE = {
     "favicon": "https://img.saintic.com/cdn/images/favicon-32.png",
     "footer": "Copyright &copy;2019 <a href='https://www.saintic.com' target='_blank'>SaintIC</a>. All rights reserved."
 }
+
+# System Config
+SYSTEM = {
+    # The number of seconds allowed to fluctuate when calculating the response time
+    "RANGE_TIME": 0.5
+}
