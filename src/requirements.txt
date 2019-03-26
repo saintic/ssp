@@ -1,0 +1,6 @@
+Flask>=1.0.2
+redis>=3.2.0
+requests
+gevent
+gunicorn
+setproctitle

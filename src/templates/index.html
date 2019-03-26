@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="robots" content="noindex, nofollow">
+		<title>{{ SITE.title }}</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+		<link rel="stylesheet" href="/static/css/style.css?v={{ Version }}">
+		<link rel="stylesheet" type="text/css" href="https://static.saintic.com/cdn/iconfont/iconfont.css">
+		<link rel="prefetch" type="application/l10n" href="/static/data/translations.ini?v={{ Version }}" />
+		<link rel="icon" href="{{ SITE.favicon }}">
+	</head>
+	<body>
+
+		<main class="wrapper">
+
+			<nav class="navigation">
+				<section class="container">
+					<a class="navigation-title" href="">
+						<img class="img" src="{{ SITE.logo }}" height="30">
+						<h1 class="title">{{ SITE.subtitle or SITE.title }}</h1>
+					</a>
+				</section>
+			</nav>
+
+{{ panels }}
+			<section class="container" id="main">
+
+				{% if not panels %}
+					<div class="panel operational" data-l10n-id="systems-operational">所有系统都在运行！</div>
+				{% else %}
+					{% for status,systems in panels.items() if systems %}
+					<div class="panel p{{ status }}">
+						<span data-l10n-id="system-status-{{ status }}"></span> <span data-l10n-id="on">on</span> {{ systems|join(', ') }}
+					</div>
+					{% endfor %}
+				{% endif %}
+
+				<h4 data-l10n-id="systems">系统</h4>
+				{% if systems == False %}
+					<span class="label degraded performance" data-l10n-id="get-systems-fail">获取系统数据失败</span>
+				{% elif not systems %}
+					<span class="label degraded performance" data-l10n-id="get-systems-nothing">暂无数据</span>
+				{% else %}
+				<ul class="systems">
+					{% for system in systems %}
+					<li>
+						{{ system.name or system.url }} {% if system.check_msg %}<attr title="{{ system.check_msg }}"><i class="saintic-icon saintic-icon-info" style="font-size:0.5em;"></i></attr>{% endif %} <span class="status s{{ system.status }}" data-l10n-id="system-status-{{ system.status }}"><i class="saintic-icon saintic-icon-{{ iconBind(system.status) }}"></i>{{ system.status }}</span>
+					</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+
+                {#
+				<h4 data-l10n-id="incidents">事件</h4>
+				{% if incidents %}
+					{% for incident in incidents %}
+					<div class="incident">
+						<span class="date moment">{{ incident.created }} UTC</span>
+
+						{% if incident.closed %}
+							<span class="label operational float-right" data-l10n-id="resolved">已解决</span>
+						{% else %}
+							<span class="label {{ incident.severity }} float-right" data-l10n-id="{{ incident.severity.replace(' ', '-') }}">{{ incident.severity }}</span>
+						{% endif %}
+						{% for system in incident.systems %}
+							<span class="label system float-right">{{ system }}</span>
+						{% endfor %}
+						<hr/>
+
+						<span class="title">{{ incident.title }}</span>
+						{{ incident.body|safe }}
+						{% for update in incident.updates %}
+							<p><em>Update <span class="moment">{{ update.created }} UTC</span></em></p>
+							{{ update.body|safe }}
+						{% endfor %}
+					</div>
+					{% endfor %}
+				{% else %}
+					<em data-l10n-id="no-incidents">在过去90天内没有发生任何事故。</em>
+				{% endif %}
+				#}
+
+			</section>
+
+			<footer class="footer">
+				<section class="container">
+					<hr/>
+					<p>{{ SITE.footer|safe }}</p>
+				</section>
+			</footer>
+
+		</main>
+		<script src="/static/js/statuspage.js" type="text/javascript"></script>
+	</body>
+</html>
