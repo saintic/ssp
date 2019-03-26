@@ -111,15 +111,15 @@ def run_add_system(url, name='', ok_status_code=200, is_json=False, verify_succe
         return res
 
 
-def run_check(sid_or_url=None):
+def run_check(name_or_url=None, debug=False):
     """运行一次检测"""
-    if not sid_or_url:
+    if not name_or_url:
         systems = get_systems()
     else:
-        if url_check(sid_or_url):
-            sid = md5(sid_or_url)
+        if url_check(name_or_url):
+            sid = md5(name_or_url)
         else:
-            sid = sid_or_url
+            sid = name_or_url
         data = get_redis_connect.hgetall(gen_rediskey("system", sid))
         if not data:
             click.echo(click.style("未发现网址", fg='red'))
@@ -129,6 +129,8 @@ def run_check(sid_or_url=None):
     if systems:
         if isinstance(systems, list):
             for sd in systems:
+                if debug:
+                    click.echo("checking " + sd["url"])
                 ud = dict(vtime=get_current_timestamp())
                 try:
                     resp = try_request(sd["url"], method="get")
@@ -188,16 +190,16 @@ def run_check(sid_or_url=None):
                         get_redis_connect.hmset(SysKey, ud)
                     except Exception as e:
                         logger.error(e, exc_info=True)
-                        click.echo(click.style("检测结果更新失败：" + sd["sid"], fg='red'))
+                        click.echo(click.style("检测结果更新失败：" + sd["sid"].encode('utf8'), fg='red'))
 
 
-def run_remove_system(sid_or_url):
+def run_remove_system(name_or_url):
     """删除一条监控状态的网址"""
-    if sid_or_url:
-        if url_check(sid_or_url):
-            sid = md5(sid_or_url)
+    if name_or_url:
+        if url_check(name_or_url):
+            sid = md5(name_or_url)
         else:
-            sid = sid_or_url
+            sid = name_or_url
         SysKey = gen_rediskey("system", sid)
         data = get_redis_connect.hgetall(SysKey)
         if not data:

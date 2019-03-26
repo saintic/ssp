@@ -34,17 +34,17 @@ def add_system(ok_status_code, json, verify_success_key, verify_success_value, v
 
 
 @cli.command()
-@click.argument("url")
-def remove_system(url):
+@click.option("--name_or_url", '-sid', help=u"根据name或url删除一条监控项")
+def remove_system(name_or_url):
     """删除一条监控状态的网址"""
-    run_remove_system(url)
+    run_remove_system(name_or_url)
 
 
 @cli.command()
-@click.option("--url", help=u"单独检测网址")
-def check(url):
+@click.option("--name_or_url", '-sid', help=u"根据name或url单独检测")
+def check(name_or_url):
     """运行一次状态检测"""
-    run_check(url)
+    run_check(name_or_url)
 
 
 if __name__ == "__main__":
