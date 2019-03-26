@@ -11,7 +11,7 @@
 
 import click
 import traceback
-from tool import Logger, get_redis_connect, url_check, gen_rediskey, md5, get_current_timestamp, email_check, try_request
+from tool import Logger, get_redis_connect, url_check, gen_rediskey, md5, get_current_timestamp, email_check, try_request, Universal_pat
 
 logger = Logger("sys").getLogger
 IndexKey = gen_rediskey("index")
@@ -69,6 +69,14 @@ def run_add_system(url, name='', ok_status_code=200, is_json=False, verify_succe
         if email:
             if not email_check(email):
                 res.update(msg="请输入有效的邮箱")
+                if isCli is True:
+                    click.echo(click.style(res["msg"], fg='red'))
+                    return
+                else:
+                    return res
+        if name:
+            if not Universal_pat.match(name):
+                res.update(msg="请输入字母、数字和下划线的有效组合")
                 if isCli is True:
                     click.echo(click.style(res["msg"], fg='red'))
                     return

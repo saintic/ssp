@@ -23,6 +23,7 @@ from config import REDIS as REDIS_URL, LOGLEVEL
 
 mail_pat = re.compile(r'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$')
 comma_pat = re.compile(r"\s*,\s*")
+Universal_pat = re.compile(r"^[a-zA-Z\_][0-9a-zA-Z\_]*$")
 get_redis_connect = from_url(REDIS_URL)
 
 
