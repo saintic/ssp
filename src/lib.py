@@ -170,7 +170,7 @@ def run_check(name_or_url=None, debug=False):
                                 if vt in resp_text:
                                     ud.update(status=1)
                                 else:
-                                    ud.update(check_msg="No preset values ​​found in response data", status=4)
+                                    ud.update(check_msg="No preset values found in response data", status=4)
                             else:
                                 ud.update(status=1)
                     else:
